@@ -1,0 +1,30 @@
+Ackley: min: 0.057783622, avg: 2.0801408, std: 0.856264
+Best solution: 0.057783622 for input: 0.06529598, -0.31512362, 
+
+Bukin: min: 0.1539332, avg: 1.4794191, std: 0.6236684
+Best solution: 0.1539332 for input: -13.616448, 1.8530306, 
+
+CarromTable: min: -24.156744, avg: -24.081728, std: 0.007680095
+Best solution: -24.156744 for input: 9.674233, -9.557746, 
+
+Easom: min: -0.98241585, avg: -0.33168393, std: 0.087170556
+Best solution: -0.98241585 for input: 4.8853097, 0.5725412, 
+
+Rosenbrock: min: 3.766821E-4, avg: 0.73958635, std: 0.6603023
+Best solution: 3.766821E-4 for input: 1.0248832, 0.9683533, 
+
+Schwefel26: min: -837.93787, avg: -834.70667, std: 8.557216
+Best solution: -837.93787 for input: 423.06717, 420.51248, 
+
+Sphere: min: 0.0010679606, avg: 0.11710357, std: 0.012374981
+Best solution: 0.0010679606 for input: 0.38291103, 0.09192936, 
+
+Trid: min: -1.9999844, avg: -1.9982188, std: 4.298752E-6
+Best solution: -1.9999844 for input: 1.9306661, 1.9117783, 
+
+
+
+
+x,y zamienione za 1 pole geometry
+
+dopracowany model fizyczny i wrzucenie go na serwer
