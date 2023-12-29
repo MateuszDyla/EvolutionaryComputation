@@ -19,16 +19,21 @@ public class Main {
         Trid trid = new Trid(n, "Trid", maxFES);
 
         Problem problems[] = {ackley, bukin, carromTable, easom, rosenbrock, schwefel26, sphere, trid};
+//        Problem problems[] = {carromTable};
 
         Algorithm RSA = new RandomSearchAlgorithm();
 
         Algorithm DEA = new DEAlgorithm(0.5, 0.6, 20);
+        Algorithm BRO = new BROptimization(20, 3);
 
-        System.out.println("----------------------------RSA-------------------------\n");
+//        System.out.println("----------------------------RSA-------------------------\n");
 //        runAlg(rep, RSA, problems);
 
-        System.out.println("----------------------------RSA-------------------------\n");
+        System.out.println("----------------------------DEA-------------------------\n");
         runAlg(rep, DEA, problems);
+
+        System.out.println("----------------------------BRO-------------------------\n");
+        runAlg(rep, BRO, problems);
 
     }
 

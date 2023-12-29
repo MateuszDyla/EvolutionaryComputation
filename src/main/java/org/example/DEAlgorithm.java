@@ -55,14 +55,14 @@ public class DEAlgorithm implements Algorithm{
                 //each dimension
                 for (int j = 0; j < problem.n; j++) {
                     if (rand.nextDouble() < CR || R == j) {
-                        y[j] = population[a].input[j] + F * (population[b].input[j] - population[c].input[j]);
+                        y[j] = population[a].x[j] + F * (population[b].x[j] - population[c].x[j]);
                         if (y[j] > problem.UpperBounds[j])
                             y[j] = problem.UpperBounds[j];
                         else if (y[j] < problem.LowerBounds[j])
                             y[j] = problem.LowerBounds[j];
                     }
                     else {
-                        y[j] = population[i].input[j];
+                        y[j] = population[i].x[j];
                     }
                     Solution newSol = problem.evaluate(y);
                     if (population[i].fitnessValue > newSol.fitnessValue)

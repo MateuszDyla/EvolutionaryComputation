@@ -23,12 +23,12 @@ public abstract class Problem {
 
     public double[] generateRandomInput() {
         fitnessValue = 0;
-        double[] input = new double[n];
+        double[] x = new double[n];
         Random rand = new Random();
         for (int i = 0; i < n; i++) {
-            input[i] = rand.nextDouble(UpperBounds[i] - LowerBounds[i]) + LowerBounds[i];
+            x[i] = rand.nextDouble(UpperBounds[i] - LowerBounds[i]) + LowerBounds[i];
         }
-        return input;
+        return x;
     }
 
     public abstract Solution evaluate(double[] x);
