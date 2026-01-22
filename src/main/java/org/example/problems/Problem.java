@@ -11,6 +11,8 @@ public abstract class Problem {
     double fitnessValue = 0;
     public int maxFES;
     public int currentEvals = 0;
+    public double minimumFitnessValue = 0;
+    public double eps;
     String name;
 
     public Problem(int n, String name, int maxFES) {

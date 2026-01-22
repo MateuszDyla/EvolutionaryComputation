@@ -9,6 +9,8 @@ public class Ackley extends Problem{
     double c = Math.PI*2;
     public Ackley(int n, String name, int maxFES) {
         super(n, name, maxFES);
+        this.minimumFitnessValue = 4.440892E-16;
+        this.eps = 1e-10;
         for (int i = 0; i < n; i++) {
             LowerBounds[i] = -32.768;
             UpperBounds[i] = 32.768;

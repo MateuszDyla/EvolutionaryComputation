@@ -25,20 +25,28 @@ public class Statistics {
     }
 
     public Solution calculateMin(Solution[] sol) {
+        bestSolution = sol[0];
         min = sol[0].fitnessValue;
+
         for (int i = 1; i < sol.length; i++) {
-            if (sol[i].fitnessValue < min)
+            if (sol[i].fitnessValue < min) {
                 min = sol[i].fitnessValue;
-            this.bestSolution = sol[i];
+                bestSolution = sol[i];
+            }
         }
         return bestSolution;
     }
 
     private void calculateStd(Solution[] sol) {
-        for (int i = 1; i < sol.length; i++) {
-            std += Math.pow(sol[i].fitnessValue - mean, 2);
+        double sumSq = 0.0;
+
+        for (int i = 0; i < sol.length; i++) {
+            double diff = sol[i].fitnessValue - mean;
+            sumSq += diff * diff;
         }
-        this.std = 1.0/sol.length * std;
+
+        double variance = sumSq / sol.length;
+        this.std = Math.sqrt(variance);
     }
 
     public double calculateXStdInDimension(Solution[] solutions, int d) {
@@ -50,9 +58,9 @@ public class Statistics {
         return std;
     }
 
-    void calculateAndShowStatistics(String problemName, Solution[] sol) {
+    Solution calculateAndShowStatistics(String problemName, Solution[] sol) {
         calculateMean(sol);
-        calculateMin(sol);
+        Solution best = calculateMin(sol);
         calculateStd(sol);
         System.out.printf(problemName + ": min: " + (float)(min) +", avg: " + (float)(mean) + ", std: " + (float)(std) + "\n");
         System.out.printf("Best solution: " + (float)(min) + " for x: ");
@@ -61,6 +69,7 @@ public class Statistics {
         }
         System.out.println("\n");
         resetStatistics();
+        return best;
     }
 
     void resetStatistics() {

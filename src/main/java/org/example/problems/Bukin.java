@@ -3,6 +3,7 @@ package org.example.problems;
 import org.example.Solution;
 
 public class Bukin extends Problem{
+
     public Bukin(int n, String name, int maxFES) {
         //In Bukin problem n is fixed to 2
         super(2, name, maxFES);

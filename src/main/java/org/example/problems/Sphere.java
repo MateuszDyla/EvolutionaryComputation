@@ -5,6 +5,7 @@ import org.example.Solution;
 public class Sphere extends Problem{
     public Sphere(int n, String name, int maxFES) {
         super(n, name, maxFES);
+        this.eps = 1e-11;
         for (int i = 0; i < n; i++) {
             if (i % 2 == 0) {
                 LowerBounds[i] = -100;

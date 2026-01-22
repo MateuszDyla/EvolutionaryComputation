@@ -5,6 +5,7 @@ import org.example.Solution;
 public class Rosenbrock extends Problem{
     public Rosenbrock(int n, String name, int maxFES) {
         super(n, name, maxFES);
+        this.eps = 1e-7;
         for (int i = 0; i < n; i++) {
             LowerBounds[i] = -5;
             UpperBounds[i] = 10;

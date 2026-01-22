@@ -5,7 +5,7 @@ import org.example.problems.Problem;
 public class RandomSearchAlgorithm implements Algorithm {
 
     Solution bestSolution = new Solution();
-    public String name = "DEA";
+    public String name = "RandomSearch";
 
     public Solution compute(Problem problem) {
 
