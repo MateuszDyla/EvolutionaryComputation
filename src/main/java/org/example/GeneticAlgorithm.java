@@ -11,20 +11,27 @@ public abstract class GeneticAlgorithm implements Algorithm {
     protected int populationSize;
     protected double crossoverRate;
     protected double mutationRate;
+    protected String name = "GeneticAlgorithm";
     protected int tournamentSize;
     protected boolean stopOnOptimum = false;
-
-    protected Random rand = new Random();
+    protected double mutationStep;
+    protected Random rand = new Random(12345                                                                                                                                         );
 
     protected GeneticAlgorithm(int populationSize,
                                double crossoverRate,
                                double mutationRate,
+                               double mutationStep,
                                int tournamentSize, boolean stopOnOptimum) {
         this.populationSize = populationSize;
         this.crossoverRate = crossoverRate;
         this.mutationRate = mutationRate;
+        this.mutationStep = mutationStep;
         this.tournamentSize = tournamentSize;
         this.stopOnOptimum = stopOnOptimum;
+    }
+
+    public void setRandom(Random r) {
+        this.rand = r;
     }
 
     @Override
@@ -176,7 +183,7 @@ public abstract class GeneticAlgorithm implements Algorithm {
         for (int i = 0; i < s.x.length; i++) {
             if (rand.nextDouble() < mutationRate) {
                 double range = problem.UpperBounds[i] - problem.LowerBounds[i];
-                double delta = (rand.nextDouble() * 2 - 1) * 0.01 * range; // ±10% zakresu
+                double delta = (rand.nextDouble() * 2 - 1) * mutationStep * range; // ±10% zakresu
                 double val = s.x[i] + delta;
                 s.x[i] = repairToBounds(val, problem.LowerBounds[i], problem.UpperBounds[i]);
             }
@@ -191,5 +198,9 @@ public abstract class GeneticAlgorithm implements Algorithm {
 
     public void setStopOnOptimum(boolean stopOnOptimum) {
         this.stopOnOptimum = stopOnOptimum;
+    }
+
+    public String getName() {
+        return name;
     }
 }

@@ -14,6 +14,8 @@ public abstract class Problem {
     public double minimumFitnessValue = 0;
     public double eps;
     String name;
+    protected Random rand = new Random(12345);
+
 
     public Problem(int n, String name, int maxFES) {
         this.n = n;
@@ -26,7 +28,6 @@ public abstract class Problem {
     public double[] generateRandomInput() {
         fitnessValue = 0;
         double[] x = new double[n];
-        Random rand = new Random();
         for (int i = 0; i < n; i++) {
             x[i] = rand.nextDouble(UpperBounds[i] - LowerBounds[i]) + LowerBounds[i];
         }
@@ -40,6 +41,10 @@ public abstract class Problem {
         return maxFES;
     }
 
+    public int getN() {
+        return n;
+    }
+
     public String getName() {
         return name;
     }
@@ -47,5 +52,11 @@ public abstract class Problem {
     public void reset() {
         currentEvals = 0;
     }
+
+    public double getMinimumFitnessValue() {
+        return minimumFitnessValue;
+    }
+    public void setRandom(Random r) { this.rand = r; }
+
 
 }

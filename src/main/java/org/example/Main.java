@@ -2,13 +2,10 @@ package org.example;
 
 import org.example.problems.*;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 public class Main {
-
-    Solution rosenbrockMin = new Solution(new double[]{1.0, 1.0}, 0.0);
-    Solution schefelmin = new Solution(new double[]{420.9687, 420.9687}, -837.9658);
-    Solution sphereMin = new Solution(new double[]{0.0, 0.0}, 0.0);
-    Solution ackleyMin = new Solution(new double[]{0.0, 0.0}, 0.0);
-
 
 
 //    public static void main(String[] args) throws Exception {
@@ -42,69 +39,65 @@ public class Main {
 //        int maxFES = 10000;
 //        runProgram(dimensions, maxFES);
 //    }
+    private static final Path PATH = Paths.get("results.csv");
 
 
     public static void main(String[] args) throws Exception {
         int n = 2;
         int rep = 500; // number of repetitions
-        Problem[] problems = getProblems(n);
-//        Problem problems[] = {carromTable};
+        int maxFES = 10000;
+        Problem[] problems = getProblems(n, maxFES);
 
         Algorithm RSA = new RandomSearchAlgorithm();
-        GeneticAlgorithm classicGA = new ClassicGA(100, 0.7, 0.01, 4, false);
-        GeneticAlgorithm elitistGA = new ElitistGA(150, 0.7, 0.01, 4, false);
-        GeneticAlgorithm steadyStateGA = new SteadyStateGA(150, 0.7, 0.01, 4, false);
+        GeneticAlgorithm classicGA = new ClassicGA(365, 0.7549, 0.03242, 0.0685, 2, false);
+        GeneticAlgorithm elitistGA = new ElitistGA(314, 0.7582, 0.0625, 0.0056, 6, false);
+        GeneticAlgorithm steadyStateGA = new SteadyStateGA(345, 0.6526, 0.0470, 0.0118, 3, false);
 
 //        System.out.println("----------------------------RSA-------------------------\n");
 //        runAlg(rep, RSA, problems);
-//
-//        System.out.println("----------------------------Classic GA-------------------------\n");
-//        runAlg(rep, classicGA, problems);
-//        System.out.println("----------------------------Elitist GA-------------------------\n");
-//        runAlg(rep, elitistGA, problems);
-//        System.out.println("----------------------------Steady State GA-------------------------\n");
-//        runAlg(rep, steadyStateGA, problems);
 
-        classicGA.setStopOnOptimum(true);
-        elitistGA.setStopOnOptimum(true);
-        steadyStateGA.setStopOnOptimum(true);
-
-        System.out.println("-------------------FES until optimum found----------------------\n");
-        System.out.printf("\nClassic GA results:\n");
-        calculateUntilBestFoundForProblems(classicGA, problems, rep);
-        System.out.printf("\nElitist GA results:\n");
-        calculateUntilBestFoundForProblems(elitistGA, problems, rep);
-        System.out.printf("\nSteady State GA results:\n");
-        calculateUntilBestFoundForProblems(steadyStateGA, problems, rep);
+        System.out.println("----------------------------Classic GA-------------------------\n");
+        runAlg(rep, classicGA, problems);
+        System.out.println("----------------------------Elitist GA-------------------------\n");
+        runAlg(rep, elitistGA, problems);
+        System.out.println("----------------------------Steady State GA-------------------------\n");
+        runAlg(rep, steadyStateGA, problems);
 
 
     }
 
-    private static Problem[] getProblems(int n) {
-        int maxFES = 10000000;
+    private static Problem[] getProblems(int n, int MaxFES) {
+        int maxFES = 10000;
 
         Ackley ackley = new Ackley(n, "Ackley", maxFES);
-//        Bukin bukin = new Bukin(n, "Bukin", maxFES);
-//        CarromTable carromTable = new CarromTable(n, "CarromTable", maxFES);
-//        Easom easom = new Easom(n, "Easom", maxFES);
         Rosenbrock rosenbrock = new Rosenbrock(n, "Rosenbrock", maxFES);
         Schwefel26 schwefel26 = new Schwefel26(n, "Schwefel26", maxFES);
         Sphere sphere = new Sphere(n, "Sphere", maxFES);
-//        Trid trid = new Trid(n, "Trid", maxFES);
 
         Problem problems[] = {ackley, rosenbrock, schwefel26, sphere};
         return problems;
     }
 
-    private static void runAlg(int rep, Algorithm alg, Problem[] problems) {
+    private static void runAlg(int rep, GeneticAlgorithm alg, Problem[] problems) {
         Statistics statistics = new Statistics();
         for (Problem problem: problems) {
+            Solution warmup = null;
+            for (int i = 0; i < 100; i++) {
+                problem.reset();
+                warmup = alg.compute(problem); // żeby JIT nie wywalił pracy
+            }
+
+
+            long t0 = System.nanoTime();
             Solution[] solutions = new Solution[rep];
             for (int i = 0; i < rep; i++) {
                 problem.reset();
                 solutions[i] = alg.compute(problem);
             }
-            statistics.calculateAndShowStatistics(problem.getName(), solutions);
+            long t1 = System.nanoTime();
+            double ms = (t1 - t0) / 1000000.0;
+
+            statistics.calculateAndSaveStatistics(PATH, problem, alg, solutions, ms);
             statistics.resetStatistics();
         }
     }

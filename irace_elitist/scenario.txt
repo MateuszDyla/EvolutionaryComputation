@@ -1,0 +1,10 @@
+scenarioFile = "scenario.txt"
+parameterFile = "parameters.txt"
+targetRunner = "target_runner.bat"
+trainInstancesFile = "instances.txt"
+
+maxExperiments = 9000
+minNbSurvival = 2
+execDir = "."
+logFile = "results/irace-log.Rdata"
+seed = 12345

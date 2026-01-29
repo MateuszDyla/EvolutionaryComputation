@@ -10,9 +10,11 @@ public class SteadyStateGA extends GeneticAlgorithm {
     public SteadyStateGA(int populationSize,
                          double crossoverRate,
                          double mutationRate,
+                         double mutationStep,
                          int tournamentSize,
                          boolean stopOnOptimum) {
-        super(populationSize, crossoverRate, mutationRate, tournamentSize, stopOnOptimum);
+        super(populationSize, crossoverRate, mutationRate, mutationStep, tournamentSize, stopOnOptimum);
+        this.name="SteadyStateGA";
     }
 
     @Override

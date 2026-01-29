@@ -7,8 +7,9 @@ import java.util.List;
 
 public class ClassicGA extends GeneticAlgorithm {
 
-    public ClassicGA(int populationSize, double crossoverRate, double mutationRate, int tournamentSize, boolean stopOnOptimum) {
-        super(populationSize, crossoverRate, mutationRate, tournamentSize, stopOnOptimum);
+    public ClassicGA(int populationSize, double crossoverRate, double mutationRate, double mutationStep, int tournamentSize, boolean stopOnOptimum) {
+        super(populationSize, crossoverRate, mutationRate, mutationStep, tournamentSize, stopOnOptimum);
+        this.name="ClassicGA";
     }
 
     @Override

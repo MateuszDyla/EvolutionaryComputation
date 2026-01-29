@@ -3,10 +3,13 @@ package org.example.problems;
 import org.example.Solution;
 
 public class Schwefel26 extends Problem{
+
+    private static final double SCHWEFEL_OPT_PER_DIM = -418.982887;
+
     public Schwefel26(int n, String name, int maxFES) {
         super(n, name, maxFES);
         this.eps = 1e-4;
-        this.minimumFitnessValue = -837.96576;
+        this.minimumFitnessValue = SCHWEFEL_OPT_PER_DIM * n;
         for (int i = 0; i < n; i++) {
             LowerBounds[i] = -500;
             UpperBounds[i] = 500;

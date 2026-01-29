@@ -1,5 +1,13 @@
 package org.example;
 
+import org.example.problems.Problem;
+
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+
 public class Statistics {
 
     double mean;
@@ -71,6 +79,105 @@ public class Statistics {
         resetStatistics();
         return best;
     }
+
+
+    public Solution calculateAndSaveStatistics(Path path,
+                                               Problem problem,
+                                               GeneticAlgorithm ga,
+                                               Solution[] sol,
+                                               double elapsedMs) {
+
+        calculateMean(sol);
+        bestSolution = calculateMin(sol);
+        calculateStd(sol);
+
+        System.out.printf(
+                "%s (n=%d) (%s): min: %.3f, avg: %.3f, std: %.3f, time: %.3f ms%n",
+                problem.getName(),
+                problem.getN(),
+                ga.getName(),
+                min, mean, std, elapsedMs
+        );
+
+        System.out.printf("Best solution: %.3f for x: ", min);
+        for (int i = 0; i < bestSolution.x.length; i++) {
+            System.out.printf("%.6f", bestSolution.x[i]);
+            if (i < bestSolution.x.length - 1) System.out.print(", ");
+        }
+        System.out.println();
+        System.out.println();
+
+        appendCsv(path, problem.getName(), ga.getName(), problem.getN(), sol.length, elapsedMs, min, mean, std, bestSolution);
+
+        Solution best = bestSolution;
+        resetStatistics();
+        return best;
+    }
+
+    private void appendCsv(Path path,
+                           String problemName,
+                           String algName,
+                           int n,
+                           int rep,
+                           double elapsedMs,
+                           double min,
+                           double mean,
+                           double std,
+                           Solution best) {
+
+        try {
+            Path parent = path.getParent();
+            if (parent != null) Files.createDirectories(parent);
+
+            boolean exists = Files.exists(path);
+            if (!exists) {
+                String header = "algorithm,problem,n,rep,time_ms,min,avg,std,best_x\n";
+                Files.writeString(path, header, StandardCharsets.UTF_8,
+                        StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+            }
+
+            String bestX = toCompactVector(best.x);
+
+            String line = String.format(java.util.Locale.US,
+                    "%s,%s,%d,%d,%.3f,%.12f,%.12f,%.12f,%s%n",
+                    csv(algName),
+                    csv(problemName),
+                    n,          // <-- NOWE
+                    rep,
+                    elapsedMs,
+                    min,
+                    mean,
+                    std,
+                    csv(bestX)
+            );
+
+
+            Files.writeString(path, line, StandardCharsets.UTF_8,
+                    StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot write CSV to " + path, e);
+        }
+    }
+
+    private String toCompactVector(double[] x) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        for (int i = 0; i < x.length; i++) {
+            sb.append(String.format(java.util.Locale.US, "%.6f", x[i]));
+            if (i < x.length - 1) sb.append(" ");
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
+    private String csv(String s) {
+        if (s == null) return "";
+        boolean needQuotes = s.contains(",") || s.contains("\"") || s.contains("\n") || s.contains("\r");
+        if (!needQuotes) return s;
+        return "\"" + s.replace("\"", "\"\"") + "\"";
+    }
+
 
     void resetStatistics() {
         mean = 0;

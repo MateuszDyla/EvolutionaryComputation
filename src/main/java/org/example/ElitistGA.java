@@ -6,8 +6,9 @@ import java.util.List;
 
 public class ElitistGA extends ClassicGA {
 
-    public ElitistGA(int populationSize, double crossoverRate, double mutationRate, int tournamentSize, boolean stopOnOptimum) {
-        super(populationSize, crossoverRate, mutationRate, tournamentSize, stopOnOptimum);
+    public ElitistGA(int populationSize, double crossoverRate, double mutationRate, double mutationStep, int tournamentSize, boolean stopOnOptimum) {
+        super(populationSize, crossoverRate, mutationRate, mutationStep, tournamentSize, stopOnOptimum);
+        this.name = "ElitistGA";
     }
 
     @Override
